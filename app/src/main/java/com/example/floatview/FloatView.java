@@ -17,7 +17,7 @@ import androidx.constraintlayout.widget.ConstraintSet;
 
 public class FloatView extends FrameLayout {
     private static final String TAG = "FloatView";
-    private static final int CLICK = 100;
+    private static final int CLICK = 150;
     private static final int MOVE = 10;
     private Context mContext;
     private ImageView mIcon;
@@ -98,12 +98,11 @@ public class FloatView extends FrameLayout {
         }
         // 判断镜像语言
         if (isMirrorLanguage()) {
-            x = mRight - x;
-            if (x > mRight) {
-
-            } else if (x < mLeft) {
-
-            }
+           if(x < mLeft){
+               x = mLeft;
+           }else if(x+mIcon.getWidth()+mText.getWidth()> mRight){
+               x = mRight - mIcon.getWidth() - mText.getWidth();
+           }
         } else {
             if (x < mLeft) {
                 x = mLeft;
@@ -117,7 +116,7 @@ public class FloatView extends FrameLayout {
         if (layoutParams != null) {
             layoutParams.topMargin = y;
             if (isMirrorLanguage()) {
-                layoutParams.rightMargin = x;
+                layoutParams.rightMargin = mRight -  x - mIcon.getWidth() - mText.getWidth();
             } else {
                 layoutParams.leftMargin = x;
             }
