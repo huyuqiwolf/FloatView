@@ -30,7 +30,13 @@ public class LoopAdapter extends RecyclerView.Adapter<LoopAdapter.Holder> {
         if (real < 0) {
             return;
         }
+        holder.itemView.setAlpha(1);
         Glide.with(holder.imageView).load(list.get(real)).apply(RequestOptions.bitmapTransform(new CircleCrop())).into(holder.imageView);
+    }
+
+    @Override
+    public void onViewRecycled(@NonNull Holder holder) {
+        super.onViewRecycled(holder);
     }
 
     public int getRealPosition(int position) {
