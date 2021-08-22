@@ -1,5 +1,6 @@
 package com.example.floatview;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -16,7 +17,7 @@ import android.widget.Toast;
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     private TextView add, remove;
-    private FloatView floatView;
+    private FloatView2 floatView;
     private int mTop, mLeft, mBottom, mRight;
     private RecyclerView recyclerView;
 
@@ -62,11 +63,26 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setAdapter(new ItemAdapter());
         boolean res = getResources().getConfiguration().getLayoutDirection() == View.LAYOUT_DIRECTION_RTL;
         Toast.makeText(this," "+res,Toast.LENGTH_LONG).show();
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if(newState == RecyclerView.SCROLL_STATE_IDLE){
+                    if(floatView!=null){
+                        floatView.showText();
+                    }
+                }else if(newState == RecyclerView.SCROLL_STATE_SETTLING|| newState == RecyclerView.SCROLL_STATE_DRAGGING){
+                    if(floatView!=null){
+                        floatView.hideText();
+                    }
+                }
+            }
+        });
     }
 
     private void add() {
         if (floatView == null) {
-            floatView = new FloatView(this);
+            floatView = new FloatView2(this);
             Log.d(TAG, "create new float view");
         }
         if (floatView.getParent() == getWindow().getDecorView()) {
